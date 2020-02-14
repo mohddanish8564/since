@@ -72,6 +72,7 @@ font-size:80%;
 												}
 												else{
 											      	$startdate=date("01/m/Y");
+																					$startdate = strtr($startdate, '/', '-');
 										     		$lastday = date('t',strtotime($startdate));
 											       $fromdate=date("$lastday/m/Y");
 																	
@@ -201,8 +202,8 @@ format:'DD/MM/YYYY'
 												$datewhere="and entry_point_date between '$startdateDB' and '$todateDB'";
 												}
 						
-												$sqlindicator1="select (SELECT distinct count($maincolumn) as NewTraining FROM $table_name where training_type='New' and valuechain=t2.valuechain and  consortium='$consortiumId' $datewhere  GROUP by consortium,valuechain) as A, 
-            (SELECT distinct count($maincolumn) as NewTraining FROM $table_name where training_type='Improved' and valuechain=t2.valuechain and consortium='$consortiumId' $datewhere GROUP by consortium,valuechain) as B,t2.valuechain as valuechain from $table_name as t2 where t2.consortium='$consortiumId' GROUP by t2.valuechain,t2.consortium";			
+												$sqlindicator1="select (SELECT distinct count($maincolumn) as NewTraining FROM $table_name where training_type='New' and valuechain=t2.valuechain and region like '%$regionName%' $datewhere  GROUP by region,valuechain) as A, 
+            (SELECT distinct count($maincolumn) as NewTraining FROM $table_name where training_type='Improved' and valuechain=t2.valuechain and region like '$regionName' $datewhere GROUP by region,valuechain) as B,t2.valuechain as valuechain from $table_name as t2 where t2.region like '%$regionName%' GROUP by t2.valuechain,t2.region";			
             
 												// echo $sqlindicator1;
 												$new=0;
@@ -307,7 +308,7 @@ format:'DD/MM/YYYY'
 												$datewhere="and bene.entry_date_to_since between '$startdateDB' and '$todateDB'";
 												}
 						
-												$sqlindicator1="SELECT distinct count(bene.beneficiary_id) as A,bene.value_chain as valuechain  FROM `xls_import_beneficiaries` as bene inner join xls_import_beneficiary_trainings as trn on trn.beneficiary_id=bene.beneficiary_id where consortium like '%$consortiumId%' and Is_Training_completed=1 $datewhere group by bene.value_chain";			
+												$sqlindicator1="SELECT distinct count(bene.beneficiary_id) as A,bene.value_chain as valuechain  FROM `xls_import_beneficiaries` as bene inner join xls_import_beneficiary_trainings as trn on trn.beneficiary_id=bene.beneficiary_id where bene.region like '%$regionName%' and Is_Training_completed=1 $datewhere group by bene.value_chain";			
             
 										//		echo $sqlindicator1;
 												$new=0;
@@ -393,7 +394,7 @@ format:'DD/MM/YYYY'
 												$datewhere="and agr_date between '$startdateDB' and '$todateDB'";
 												}
 				
-												$sqlindicator1="SELECT distinct count(agr_date) as A,value_chain as valuechain  FROM `xls_import_pp` where consortium like '%$consortiumId%' $datewhere group by value_chain";			
+												$sqlindicator1="SELECT distinct count(agr_date) as A,value_chain as valuechain  FROM `xls_import_pp` where Region like '%$regionName%' $datewhere group by value_chain";			
             
 									//		echo $sqlindicator1;
 												$new=0;
@@ -480,7 +481,7 @@ format:'DD/MM/YYYY'
 												$datewhere="and entry_date_to_since between '$startdateDB' and '$todateDB'";
 												}
 				
-												$sqlindicator1="SELECT distinct count(bene.beneficiary_id) as A,bene.value_chain as valuechain FROM `xls_import_job_placement` as jp  inner join xls_import_beneficiaries as bene on bene.beneficiary_id=jp.beneficiary_id where bene.consortium like '%$consortiumId%' and placement_type='Apprenticeship' $datewhere";			
+												$sqlindicator1="SELECT distinct count(bene.beneficiary_id) as A,bene.value_chain as valuechain FROM `xls_import_job_placement` as jp  inner join xls_import_beneficiaries as bene on bene.beneficiary_id=jp.beneficiary_id where bene.region like '%$regionName%' and placement_type='Apprenticeship' $datewhere";			
          
 									//		echo $sqlindicator1;
 												$new=0;
