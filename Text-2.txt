@@ -1,0 +1,19 @@
+﻿ALTER TABLE `user_login` CHANGE `subject` `subject` VARCHAR(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+ALTER TABLE `subsrenew` ADD `status` TINYINT(1) NOT NULL AFTER `pays`;
+ALTER TABLE `topic` ADD `htmltext` LONGTEXT NOT NULL AFTER `name`;
+
+
+ALTER TABLE `user_login` ADD `teachid` INT(11) NOT NULL AFTER `dstatus`;
+
+ALTER TABLE `stu_order` ADD `pays` TINYINT(1) NOT NULL AFTER `amt`;
+
+ALTER TABLE `topic` CHANGE `htmltext` `htmltext` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+
+
+Login URL : https://pradeepkshetrapal.com:2083
+
+User : pradeepkshetrapa
+
+Pass : 7sdM}%E^S5\fVnzt

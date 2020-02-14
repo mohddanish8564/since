@@ -1,0 +1,138 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+	
+	
+	#logo{
+		margin-top:-2px !important;
+	}
+	
+	/* main Submit */
+	.btnsumit{
+	    padding: 6px !important;
+	}	
+	
+	/* margin */
+	
+		.ml12{
+    margin-left: 12px !important;
+	}
+	
+	.mb15{
+		margin-bottom:15px !important;
+	}
+	/* end margin */
+	
+	/* padding */
+	
+	.pl0{
+		padding-left:0px !important;
+	}
+	/* end padding */
+
+	.login-info{
+		display:none !important;
+	}
+
+	.custom-form header{
+		  display: block;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(0,0,0,.2);
+    background: #fff;
+    font-size: 16px;
+    font-weight: 300;
+    color: #232323;
+    margin: 10px 14px 10px !important;
+	}
+	/* End  main Submit */
+	
+	
+
+#activity,.project-context.hidden-xs,#speech-btn,ul.header-dropdown-list.hidden-xs,.page-footer{
+    display:none !important;
+} 
+
+
+
+	
+	em.invalid {
+    color: #ec6262;
+}
+	
+	.cstm_dropdown-menu{left:-74px !important}
+	
+	/* media Queries */
+	
+	@media screen and (max-width: 992px) {
+  .ml0 {
+    margin-left:0px !important;
+  }
+}
+
+
+
+
+.customdiv{
+	  float: left;
+    width: 100%;
+    position: relative;
+    font-size: 13px;
+    -moz-border-radius: 0;
+    -khtml-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    margin: 0;
+    border-width: 1px 1px 2px;
+    border-style: solid;
+    border-top: none;
+    border-right-color: #CCC!important;
+    border-bottom-color: #CCC!important;
+    border-left-color: #CCC!important;
+    padding: 13px 13px 0;
+    overflow: visible;
+}
+.demo{
+	display:none !important;
+}
+
+
+.print-btn {
+    float: right;
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    z-index: 9999;
+}
+
+.widget-body{
+	position:relative;
+}
+.mb20{margin-bottom:20;}
+.table thead tr{background: #fff; font-size: 15px;} 
+
+
+
+tr {
+    border-bottom: 1px solid#ddd;
+}
+
+.indcatortit{
+   	text-align: center;
+    background: #eff7f7;
+}
