@@ -88,8 +88,12 @@ $route['expected_outcome1_report'] = 'reports/reports/expected_outcome1_report';
 $route['expected_outcome2_report'] = 'reports/reports/expected_outcome2_report';
 $route['specific_objective_report'] = 'reports/reports/specific_objective_report';
 $route['report-er1'] = 'reports/reports/report_er1';
-$route['summary-report'] = 'reports/reports/report_summary_Report';
 $route['report-er2'] = 'reports/reports/report_er2';
+$route['summary-report'] = 'reports/reports/report_summary_Report';
+$route['disaggregriate-summary-report'] = 'reports/reports/disaggregriate_summary_Report';
+$route['log-report'] = 'reports/reports/log_report';
+$route['er3-entry'] = 'reports/reports/er3entryform';
+
 
 
 

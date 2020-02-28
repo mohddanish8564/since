@@ -138,42 +138,9 @@ class Admindashboard extends CI_Controller {
 						// (SELECT count(bene1.sex) FROM `import_smecompanies` as sme1 inner join import_job_placement as job1 on job1.sme_or_cpmpany_id=sme1.enterprise_id inner join import_beneficiaries as bene1 on bene1.beneficiary_id=job1.beneficiary_id where bene1.sex='Male' and MONTH(bene1.entry_date_to_since)=MONTH('".$todaymonth."') and sme1.`value_chain`=sme.`value_chain` group by sme1.`value_chain`) as male,
 					// (SELECT count(bene2.sex) FROM `import_smecompanies` as sme2 inner join import_job_placement as job2 on job2.sme_or_cpmpany_id=sme2.enterprise_id inner join import_beneficiaries as bene2 on bene2.beneficiary_id=job2.beneficiary_id where bene2.sex='Female' and MONTH(bene2.entry_date_to_since)=MONTH('".$todaymonth."') and sme2.`value_chain`=sme.`value_chain` group by sme2.`value_chain`) as Female,
 // count(bene.sex) as total FROM `import_smecompanies` as sme inner join import_job_placement as job on job.sme_or_cpmpany_id=sme.enterprise_id inner join import_beneficiaries as bene on bene.beneficiary_id=job.beneficiary_id and MONTH(bene.entry_date_to_since)=MONTH('".$todaymonth."') group by sme.`value_chain`";
+						//SME_Support_date
 						
-						
-						$sql ="SELECT sme.`value_chain`, 
-       
-       (SELECT Count(bene1.sex) 
-        FROM   `import_smecompanies` AS sme1 
-               INNER JOIN import_job_placement AS job1 
-                      ON job1.sme_or_cpmpany_id = sme1.enterprise_id 
-               Left JOIN import_beneficiaries AS bene1 
-                       ON bene1.beneficiary_id = job1.beneficiary_id 
-        WHERE  bene1.sex = 'Male' 
-               AND Month(bene1.entry_date_to_since) = Month('$todaymonth') and Year(bene1.entry_date_to_since) = Year('$todaymonth')
-               AND sme1.`value_chain` = sme.`value_chain` 
-        GROUP  BY sme1.`value_chain`) AS male, 
-        
-       (SELECT Count(bene2.sex) 
-        FROM   `import_smecompanies` AS sme2 
-               INNER JOIN import_job_placement AS job2 
-                      ON job2.sme_or_cpmpany_id = sme2.enterprise_id 
-               LEFT JOIN import_beneficiaries AS bene2 
-                       ON bene2.beneficiary_id = job2.beneficiary_id 
-        WHERE  bene2.sex = 'Female' 
-               AND Month(bene2.entry_date_to_since) = Month('$todaymonth') and Year(bene2.entry_date_to_since) = Year('$todaymonth')
-               AND sme2.`value_chain` = sme.`value_chain` 
-        GROUP  BY sme2.`value_chain`) AS Female, 
-        
-        
-       Count(bene.sex)  AS total 
-FROM   `import_smecompanies` AS sme 
-       inner JOIN import_job_placement AS job 
-              ON job.sme_or_cpmpany_id = sme.enterprise_id 
-       left JOIN import_beneficiaries AS bene 
-               ON bene.beneficiary_id = job.beneficiary_id 
-                  AND Month(bene.entry_date_to_since) = Month('$todaymonth') 
-																		and Year(bene.entry_date_to_since) = Year('$todaymonth')
-GROUP  BY sme.`value_chain`";
+						$sql ="";
 						
 						// echo $sql;
 						$data['chainwisegraph']= $this->Allfunction->runQueryGet($sql);

@@ -136,3 +136,16 @@ tr {
    	text-align: center;
     background: #eff7f7;
 }
+
+
+@media print {
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:center;
+    border:1px solid #00F;
+    font-size:12px;
+    }
+
+}

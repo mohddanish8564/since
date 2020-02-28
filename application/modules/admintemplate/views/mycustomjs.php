@@ -17,12 +17,34 @@ $(document).ready(function() {
         }
     });
 	
+	$(".float").on("keypress keyup blur",function (event) {
+													//this.value = this.value.replace(/[^0-9\.]/g,'');
+						$(this).val($(this).val().replace(/[^0-9\.]/g,''));
+													if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+																	event.preventDefault();
+													}
+									});
+									
+									
+   $('th,td').hover(
+
+               function () {
+																			//console.log("in");
+                  $(this).find('input.cinput').css({"border":"1px solid"});
+               }, 
+				
+               function () {
+																		//	console.log("out");
+                  $(this).find('input.cinput').css({"border":"0px"});
+               }
+            );
 	
 	
-		$("#create-user").validate();
 	
 });
 
+
+ 
 
 //  ajax get cities getstatecity
 

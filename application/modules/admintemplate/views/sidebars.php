@@ -71,12 +71,15 @@
 				<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a><ul style="display: none;">
 				<li><a href="<?php echo base_url(); ?>overall_objective_report" title="Carousel">Overall Objective Reports.</a></li>
 				<!--<li><a href="<?php echo base_url(); ?>overall_objective_reportold" title="Carousel">Overall Objective Reports Old.</a></li>	-->			
-				<li><a href="<?php echo base_url(); ?>expected_outcome1_report" title="Tab">Expected Outcome 1 Reports</a></li>
-				<li><a href="<?php echo base_url(); ?>expected_outcome2_report" title="Tab">Expected Outcome 2 Reports</a></li>
+			<!--	<li><a href="<?php echo base_url(); ?>expected_outcome1_report" title="Tab">Expected Outcome 1 Reports</a></li>
+				<li><a href="<?php echo base_url(); ?>expected_outcome2_report" title="Tab">Expected Outcome 2 Reports</a></li>-->
 				<li><a href="<?php echo base_url(); ?>specific_objective_report" title="Tab">Specific Objective Reports</a></li>
 				<li><a href="<?php echo base_url(); ?>report-er1" title="Tab">Report Er1</a></li>
 				<li><a href="<?php echo base_url(); ?>report-er2" title="Tab">Report Er2</a></li>
-				<li><a href="<?php echo base_url(); ?>summary-report" title="Tab">Summary Report</a></li>						
+				<li><a href="<?php echo base_url(); ?>summary-report" title="Tab">Summary Report</a></li>
+					<li><a href="<?php echo base_url(); ?>disaggregriate-summary-report" title="Tab">Disaggregriate Summary Report</a></li>
+				
+				<li><a href="<?php echo base_url(); ?>log-report" title="Tab">Upload Xlx Logs</a></li>			
 								
 
 				

@@ -90,10 +90,58 @@
 		</script>
 
 
+<script type="text/javascript" src="<?php echo ASSETS_URL; ?>/js/exporttable/xls.core.min.js"></script>
+<script type="text/javascript" src="<?php echo ASSETS_URL; ?>/js/exporttable/Blob.min.js"></script>
+<script type="text/javascript" src="<?php echo ASSETS_URL; ?>/js/exporttable/FileSaver.min.js"></script>
+<script type="text/javascript" src="<?php echo ASSETS_URL; ?>/js/exporttable/tableexport.js"></script>
+
+<script>
+$("table").tableExport({formats: ["xls"],    });
+//$("table").tableExport({formats: ["xlsx","xls", "csv", "txt"],    });
+</script>
+
+
+<script>
+
+    var DefaultTable = document.getElementById('default-table');
+    new TableExport(DefaultTable, {
+        headers: true,                              // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
+        footers: true,                              // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
+        formats: ['xlsx', 'csv', 'txt'],            // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+        filename: 'id',                             // (id, String), filename for the downloaded file, (default: 'id')
+        bootstrap: false,                           // (Boolean), style buttons using bootstrap, (default: false)
+        position: 'bottom',                         // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+        ignoreRows: null,                           // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
+        ignoreCols: null,                           // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
+        ignoreCSS: '.tableexport-ignore',           // (selector, selector[]), selector(s) to exclude cells from the exported file(s) (default: '.tableexport-ignore')
+        emptyCSS: '.tableexport-empty',             // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s) (default: '.tableexport-empty')
+        trimWhitespace: true,                       // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: true)
+        RTL: false,                                 // (Boolean), set direction of the worksheet to right-to-left (default: false)
+        sheetname: 'id'                             // (id, String), sheet name for the exported spreadsheet, (default: 'id')
+    });
+    // **** jQuery **************************
+    //    $(DefaultTable).tableExport({
+    //        headers: true,
+    //        footers: true,
+    //        formats: ['xlsx', 'csv', 'txt'],
+    //        filename: 'id',
+    //        bootstrap: true,
+    //        position: 'bottom',
+    //        ignoreRows: null,
+    //        ignoreCols: null,
+    //        ignoreCSS: '.tableexport-ignore',
+    //        emptyCSS: '.tableexport-empty',
+    //        trimWhitespace: false,
+    //        RTL: false,
+    //        sheetname: 'id'
+    //    });
+    // **************************************
+
+</script>
 
 <?php 
 
-//$this->load->view('mycustomjs');
+$this->load->view('mycustomjs');
 ?>
 
 

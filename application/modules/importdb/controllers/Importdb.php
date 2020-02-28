@@ -34,6 +34,15 @@ var $table_tvet_bkp='xls_import_tvet_bkp';
 var $table_tvet_training='xls_import_tvet_training';
 var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 
+
+var $table_xls_import_extra_indicators='xls_import_extra_indicators';
+var $table_xls_import_extra_indicators_bkp='xls_import_extra_indicators_bkp';
+
+
+var $table_valuechain_master='valuechain_master';
+
+
+
 	 public function __construct()
     {
         parent::__construct();
@@ -102,9 +111,9 @@ var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 					 	$result=$expchklot[0];
 									//die;
 						$field_arry2=array('lots_name'=>$result,'status'=>1);
-			   $checklot=$this->Allfunction->getArray('count(*) as count','lots_master',$field_arry2);
+			   $checklot=$this->Allfunction->getArray('count(*) as count,region','lots_master',$field_arry2);
 
-						// print_r($checklot);
+						// print_r($checklot[0]['region']);
 					// print_r(	$checkfileexist);
 						// die;
 													if($checklot[0]['count']==0){
@@ -120,6 +129,10 @@ var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 						  	redirect(base_url().'import-database');
 							
 						}
+						
+						
+						$uploadedFileRegion=$checklot[0]['region'];
+						
 						
 
 												
@@ -142,48 +155,57 @@ var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 														$sheet[$ik] = $objPHPExcel->getSheet($ik);											
 														$sheetData= $sheet[$ik]->toArray(null, true, true, true);
 																	if($ik==0){
-																		$this->xls_import_beneficiary_trainings($sheetData,$file_name);
+																		$this->xls_import_beneficiary_trainings($sheetData,$file_name,$uploadedFileRegion);
 																	}
 																		if($ik==1){
 													
-																		$this->xls_import_beneficiaries($sheetData,$file_name);
+																		$this->xls_import_beneficiaries($sheetData,$file_name,$uploadedFileRegion);
 																	}		
 																	
 																	if($ik==2){
 													
-																		$this->xls_import_JobPlacement($sheetData,$file_name);
+																		$this->xls_import_JobPlacement($sheetData,$file_name,$uploadedFileRegion);
 																	}	
 																	
 																	if($ik==3){
 													
-																		$this->xls_import_oo_indicators12($sheetData,$file_name);
+																		$this->xls_import_oo_indicators12($sheetData,$file_name,$uploadedFileRegion);
 																	}	
 															
 
 																if($ik==4){
 													
-																		$this->xls_import_oo_indicators34($sheetData,$file_name);
+																		$this->xls_import_oo_indicators34($sheetData,$file_name,$uploadedFileRegion);
 																	}	
 																	
 																if($ik==5){													
-																		$this->xls_import_ppp($sheetData,$file_name);										
+																		$this->xls_import_ppp($sheetData,$file_name,$uploadedFileRegion);										
 																	}
 
 																if($ik==6){													
-																			$this->xls_import_sme_support($sheetData,$file_name);															
+																			$this->xls_import_sme_support($sheetData,$file_name,$uploadedFileRegion);															
 																}						
 
 																if($ik==7){													
-																		$this->xls_import_tvet($sheetData,$file_name);															
+																		$this->xls_import_tvet($sheetData,$file_name,$uploadedFileRegion);															
 																}					
 
 																if($ik==8){													
-																		$this->xls_import_smecompanies($sheetData,$file_name);															
+																		$this->xls_import_smecompanies($sheetData,$file_name,$uploadedFileRegion);															
 																}				
 
 																if($ik==9){													
-																		$this->xls_import_tvet_training($sheetData,$file_name);															
+																		$this->xls_import_tvet_training($sheetData,$file_name,$uploadedFileRegion);															
 																}																				
+																
+																	if($ik==10){													
+																		$this->xls_import_extra_indicators($sheetData,$file_name,$uploadedFileRegion);															
+																}					
+																
+																	if($ik==11){													
+																		$this->table_valuechain_master($sheetData,$file_name,$uploadedFileRegion);															
+																}					
+																	
 																	
 																	
 																	
@@ -214,7 +236,7 @@ var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 			
 	/* import_beneficiary_trainings  */
 		
-		 function xls_import_beneficiary_trainings($getDataArray,$file_name){
+		 function xls_import_beneficiary_trainings($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -223,7 +245,7 @@ var $table_tvet_training_bkp='xls_import_tvet_training_bkp';
 					$table_truncate=$this->table_beneficiary_trainings;
 					if(count($getDataArray[1])==8){							
 				
-		   $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'Region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -285,7 +307,7 @@ $row++;
 							
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -321,16 +343,16 @@ $row++;
 			
 	/* import_beneficiaries  */
 	
-	 function xls_import_beneficiaries($getDataArray,$file_name){
+	 function xls_import_beneficiaries($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 								
 					$bkptable=$this->table_beneficiaries_bkp;
 					$table=$this->table_beneficiaries;
 					$table_truncate=$this->table_beneficiaries;
-					if(count($getDataArray[1])==12){							
+					if(count($getDataArray[1])==13){							
 			
-		   $this->backuptable($bkptable,$table,$table_truncate);
+		   $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -362,6 +384,7 @@ $row++;
 							'disabled'=>strip_tags($getData[9]),	
 							'Employed'=>strip_tags($getData[10]),	
 							'consortium'=>strip_tags($getData[11]),	
+							'dob'=>strip_tags(date("Y-m-d",strtotime($getData[12]))),	
 					  'status'=>1,
 					  'postdate'=>date("Y-m-d"),
 							'file_name'=>$file_name
@@ -392,7 +415,7 @@ $row++;
 							
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -410,7 +433,7 @@ $row++;
 															}
 															
 													else{
-																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 12</div>";														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 13</div>";														
 															  $this->session->set_flashdata('notify', $msg);											
 												  //  	redirect(base_url().'import-database');														
 													}
@@ -422,16 +445,16 @@ $row++;
 
 
 /*** Job Placement ***/ 	
-	 function xls_import_JobPlacement($getDataArray, $file_name){
+	 function xls_import_JobPlacement($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
 					$bkptable=$this->table_job_placement_bkp;
 					$table=$this->table_job_placement;
 					$table_truncate=$this->table_job_placement;
-					if(count($getDataArray[1])==9){							
+					if(count($getDataArray[1])==10){							
 				
-		   $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'Region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -459,7 +482,8 @@ $row++;
       	'EmploymentDate'=>date("Y-m-d",strtotime($getData[5])),
 							'End_Date'=>date("Y-m-d",strtotime($getData[6])),							
 							'Region'=>$getData[7],
-							'cust_status	'=>$getData[8],		
+							'cust_status	'=>$getData[8],	
+       'Status_Date'=>date("Y-m-d",strtotime($getData[9])),								
 					  'status'=>1,
 					  'postdate'=>date("Y-m-d"),
 							'file_name'=>$file_name
@@ -490,7 +514,7 @@ $row++;
 							
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -507,7 +531,7 @@ $row++;
 															}
 															
 													else{
-																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 7</div>";														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 10</div>";														
 															  $this->session->set_flashdata('notify', $msg);											
 												  //  	redirect(base_url().'import-database');														
 													}
@@ -521,7 +545,7 @@ $row++;
 /*** xls_import_oo_indicators12***/ 
 
 	
-	 function xls_import_oo_indicators12($getDataArray,$file_name){
+	 function xls_import_oo_indicators12($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -530,7 +554,7 @@ $row++;
 			 	 $table_truncate=$this->table_oo_indicators12;
 					if(count($getDataArray[1])==11){							
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -591,7 +615,7 @@ $row++;
 							
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -622,7 +646,7 @@ $row++;
 	/*** xls_import_oo_indicators34 ***/ 
 
 	
-	 function xls_import_oo_indicators34($getDataArray,$file_name){
+	 function xls_import_oo_indicators34($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -631,7 +655,7 @@ $row++;
 			 	 $table_truncate=$this->table_oo_indicators34;
 					if(count($getDataArray[1])==11){							
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -693,7 +717,7 @@ $row++;
 							
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -724,7 +748,7 @@ $row++;
 		
 		/*** xls_import_ppp ***/ 
 	
-	 function xls_import_ppp($getDataArray,$file_name){
+	 function xls_import_ppp($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -732,9 +756,9 @@ $row++;
 				 	$table=$this->table_pp;
 			 	 $table_truncate=$this->table_pp;
 						
-					if(count($getDataArray[1])==5){							
+					if(count($getDataArray[1])==6){							
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'Region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -760,8 +784,8 @@ $row++;
 					  'consortium'=>strip_tags($getData[1]),
        'agr_date'=>date("Y-m-d",strtotime($getData[2])),	
 							'decent_work_principles'=>strip_tags($getData[3]),	
-							'Region'=>strip_tags($getData[4]),										
-							
+							'Region'=>strip_tags($getData[4]),	
+       'TVET_name'=>strip_tags($getData[5]),
 					  'status'=>1,
 					  'postdate'=>date("Y-m-d"),
 							'file_name'=>$file_name
@@ -790,7 +814,7 @@ $row++;
 											
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -808,7 +832,7 @@ $row++;
 															
 													else{
 														
-																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 4</div>";														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 6</div>";														
 															  $this->session->set_flashdata('notify', $msg);											
 												  //  	redirect(base_url().'import-database');														
 													}
@@ -820,7 +844,7 @@ $row++;
 		
 		/*** xls_import_sme_support ***/ 
 			
-	 function xls_import_sme_support($getDataArray,$file_name){
+	 function xls_import_sme_support($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -830,7 +854,7 @@ $row++;
 						
 					if(count($getDataArray[1])==6){							
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'Region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -886,7 +910,7 @@ $row++;
 											
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -919,7 +943,7 @@ $row++;
 			
 		/*** xls_import_tvet ***/ 
 			
-	 function xls_import_tvet($getDataArray, $file_name){
+	 function xls_import_tvet($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
@@ -929,7 +953,7 @@ $row++;
 						
 					if(count($getDataArray[1])==4){						
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -983,7 +1007,7 @@ $row++;
 											
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -1013,16 +1037,16 @@ $row++;
 	
 			/*** xls_import_smecompanies ***/ 
 			
-	 function xls_import_smecompanies($getDataArray, $file_name){
+	 function xls_import_smecompanies($getDataArray,$file_name,$masterregionfile){
 						// echo '<pre>';
 						// print_R($getDataArray);
 							
 				 	$bkptable=$this->table_smecompanies_bkp;
 				 	$table=$this->table_smecompanies;
 			 	 $table_truncate=$this->table_smecompanies;
-					if(count($getDataArray[1])==13){						
+					if(count($getDataArray[1])==14){						
 				
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -1057,6 +1081,7 @@ $row++;
 							'emp_no_entry_point'=>strip_tags($getData[10]),
 							'emp_no_end_line'=>strip_tags($getData[11]),
 							'entry_point_date'=>date("Y-m-d",strtotime($getData[12])),
+							'SME_Support_date'=>date("Y-m-d",strtotime($getData[13])),
 							'status'=>1,
 					  'postdate'=>date("Y-m-d"),
 							'file_name'=>$file_name
@@ -1087,7 +1112,7 @@ $row++;
 											
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -1105,7 +1130,7 @@ $row++;
 															
 													else{
 														
-																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 4</div>";														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 14</div>";														
 															  $this->session->set_flashdata('notify', $msg);											
 												  //  	redirect(base_url().'import-database');														
 													}
@@ -1117,7 +1142,7 @@ $row++;
 		
 		/*** xls_import_tvet_training ***/ 
 			
-	 function xls_import_tvet_training($getDataArray, $file_name){
+	 function xls_import_tvet_training($getDataArray,$file_name,$masterregionfile){
 						 // echo '<pre>';
 						// print_r($getDataArray);
 					
@@ -1130,7 +1155,7 @@ $row++;
 						
 					if(count($getDataArray[1])==9){						
 
-		    $this->backuptable($bkptable,$table,$table_truncate);
+		    $this->backuptable($bkptable,$table,$table_truncate,'region',$masterregionfile);
 						$row=1;
 						$uploaded_rec=0;
 						$notinsert=0;
@@ -1192,7 +1217,7 @@ $row++;
 											
 					$rtData1=array(
 				   'table_name'=>$table,			
-					  'uploaded_rec'=>$uploaded_rec,
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
        'total_records'=>strip_tags($row-1),
 					  'date'=>date("Y-m-d")
 					  );								
@@ -1220,15 +1245,221 @@ $row++;
 		
 		
 	
+	
+	/************ Extra Indicators ***********/
+	
+		/*** xls_import_tvet_training ***/ 
+			
+	 function xls_import_extra_indicators($getDataArray,$file_name,$masterregionfile){
+			
+	 	$bkptable=$this->table_xls_import_extra_indicators_bkp;
+				 	$table=$this->table_xls_import_extra_indicators;
+			 	 $table_truncate=$this->table_xls_import_extra_indicators;
+						
+					if(count($getDataArray[1])==6){						
+
+		    $this->backuptable($bkptable,$table,$table_truncate,'Region',$masterregionfile);
+						$row=1;
+						$uploaded_rec=0;
+						$notinsert=0;
+						$totalRec=0;
+
+        foreach($getDataArray as  $getData)
+           {				
+											
+  					// use to re index the array 											
+									$getData=	array_values($getData);	
+			   	//			print_r($getData);
+										if(	$row==1){
+											
+										}			
+										
+					else{
+						
+	   	try 
+					  {	
+							
+							$rtData=array(
+				   'Years'=>strip_tags($getData[0]),			
+					  'Quarter'=>strip_tags($getData[1]),
+       'No_trainees'=>date("Y-m-d",strtotime($getData[2])),	
+							'Sex'=>strip_tags($getData[3]),
+							'No_multi_stackeholder'=>strip_tags($getData[4]),
+							'Region'=>strip_tags($getData[5]),
+
+							'status'=>1,
+					  'post_date'=>date("Y-m-d"),
+							'file_name'=>$file_name
+					  );		
+							
+							$response=$this->Allfunction->insertDatas('1', $rtData,$table);
+
+				if($response['success']!==0){		
+						$uploaded_rec++;			
+						}			
+						
+							else{				
+							$Errmessage[]=$response['msg'];				
+									$notinsert++;				
+						}			
+				
+								}
+									catch (Exception $e) {
+														
+			}
+							
+							}
+
+			$row++;					
+           }			
+											
+											// print_r($Errmessage);
+											// die;
+											
+					$rtData1=array(
+				   'table_name'=>$table,			
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
+       'total_records'=>strip_tags($row-1),
+					  'date'=>date("Y-m-d")
+					  );								
+							if(count($Errmessage)>0){
+								$this->session->set_flashdata('errUpload', implode(' ,',$Errmessage));			
+							}
+							
+			  	$response=$this->Allfunction->insertDatas('1', $rtData1,'log');			
+					$_SESSION['summary'][]=$rtData1;
+      $msg="<div class='alert alert-success fade in'>Import Successfully</div>";	
+			 $this->session->set_flashdata('notify', $msg);			
+     $this->session->set_flashdata('updoadedinfo',$rtData1);		
+			//redirect(base_url().'import-database');												
+															}
+															
+													else{
+														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 6</div>";														
+															  $this->session->set_flashdata('notify', $msg);											
+												  //  	redirect(base_url().'import-database');														
+													}												
+					
+								}
+		
+		
+		
+	
+	
+	/***********  Table Value chain Mater ********/
+				
+	 function table_valuechain_master($getDataArray,$file_name,$masterregionfile){
+
+			 	$table=$this->table_valuechain_master;
+					// print_r($getDataArray);
+						// echo count($getDataArray[1]);
+						// die;
+					if(count($getDataArray[1])==2 || count($getDataArray[1])==4){						
+
+						$row=1;
+						$uploaded_rec=0;
+						$notinsert=0;
+						$totalRec=0;
+
+        foreach($getDataArray as  $getData)
+           {				
+											
+  					// use to re index the array 											
+									$getData=	array_values($getData);	
+			   	//			print_r($getData);
+										if(	$row==1){
+											
+										}			
+										
+					else{
+						
+	   	try 
+					  {	
+							
+							$rtData=array(
+				   'name'=>strip_tags($getData[0]),			
+					  'region'=>strip_tags($getData[1]),
+							'status'=>1
+					  );		
+							
+							$response=$this->Allfunction->insertDatas('1', $rtData,$table);
+
+				if($response['success']!==0){		
+						$uploaded_rec++;			
+						}			
+						
+							else{				
+							$Errmessage[]=$response['msg'];				
+									$notinsert++;				
+						}			
+				
+								}
+									catch (Exception $e) {
+														
+			}
+							
+							}
+
+			$row++;					
+           }			
+											
+											// print_r($Errmessage);
+											// die;
+											
+					$rtData1=array(
+				   'table_name'=>$table,			
+					  'uploaded_rec'=>$uploaded_rec,'file_name'=>$file_name,
+       'total_records'=>strip_tags($row-1),
+					  'date'=>date("Y-m-d")
+					  );								
+							if(count($Errmessage)>0){
+								$this->session->set_flashdata('errUpload', implode(' ,',$Errmessage));			
+							}
+							
+			  	$response=$this->Allfunction->insertDatas('1', $rtData1,'log');			
+					$_SESSION['summary'][]=$rtData1;
+      $msg="<div class='alert alert-success fade in'>Import Successfully</div>";	
+			 $this->session->set_flashdata('notify', $msg);			
+     $this->session->set_flashdata('updoadedinfo',$rtData1);		
+			//redirect(base_url().'import-database');												
+															}
+															
+													else{
+														
+																	$msg="<div class='alert alert-danger fade in'>$table CSV should have Columns 2</div>";														
+															  $this->session->set_flashdata('notify', $msg);											
+												  //  	redirect(base_url().'import-database');														
+													}												
+					
+								}
+		
+		
+		
+	
+	
+	
 	/********* Backup Table *********/
 		
-	function backuptable($bkptable,$table,$table_truncate){
+	// function backuptable($bkptable,$table,$table_truncate){
+	
+			// $sqlbkp="INSERT $bkptable SELECT *,CURRENT_TIMESTAMP() FROM $table";
+					// $response=$this->Allfunction->customQuery($sqlbkp);
+					// //truncate table 
+					// if($response==1){
+					// $sqltruncate="TRUNCATE TABLE $table_truncate";
+					// $restrunc=$this->Allfunction->customQuery($sqltruncate);
+					// }
+	// }
+	
+		function backuptable($bkptable,$table,$table_truncate,$regcolumn,$region){
 	
 			$sqlbkp="INSERT $bkptable SELECT *,CURRENT_TIMESTAMP() FROM $table";
 					$response=$this->Allfunction->customQuery($sqlbkp);
 					//truncate table 
 					if($response==1){
-					$sqltruncate="TRUNCATE TABLE $table_truncate";
+				//		delete FROM  `xls_import_beneficiaries` where region='Addis Ababa'
+					$sqltruncate="delete FROM  $table_truncate where $regcolumn='$region' TRUNCATE TABLE";
 					$restrunc=$this->Allfunction->customQuery($sqltruncate);
 					}
 	}

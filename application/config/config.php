@@ -33,10 +33,10 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 | a PHP script and you can easily do that on your own.
 |
 */
-define('ASSETS_URL','http://localhost/since/newtheme');
-define('APP_URL','http://localhost/since');
+define('ASSETS_URL','http://phpwork.co.in/since/newtheme');
+define('APP_URL','http://phpwork.co.in/since');
 
-$config['base_url'] = 'http://localhost/since';
+$config['base_url'] = 'http://phpwork.co.in/since';
 
 $config['nonet'] ='no';
 $config['debug'] =FALSE;
